@@ -26,7 +26,7 @@ const registerUser = async (req: Request, res: Response) => {
     const savedUser = await newUser.save();
     if (savedUser) {
       const token = createToken(savedUser._id.toString());
-      res.status(201).json({ token: token });
+      res.status(201).json({ user: savedUser, token: token });
     }
   } catch (error) {
     res.status(400).json(error); // Handle any validation or database errors

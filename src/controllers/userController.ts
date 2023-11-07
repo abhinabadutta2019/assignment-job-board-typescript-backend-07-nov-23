@@ -33,5 +33,27 @@ const registerUser = async (req: Request, res: Response) => {
     res.status(400).json(error); // Handle any validation or database errors
   }
 };
+//
+export const loginController = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find the user by username
+    const user = await User.findOne({ email: email });
+
+    // Check if the user exists and compare passwords
+    if (user && user.password === password) {
+      // creating token
+      const token = createToken(user._id.toString());
+      res.status(200).json({ token: token });
+      //
+      //
+    } else {
+      res.status(401).json({ error: "Invalid username or password" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 export { registerUser };

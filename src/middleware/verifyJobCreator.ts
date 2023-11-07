@@ -47,4 +47,4 @@ const verifyJobCreator = async (
   }
 };
 
-module.exports = { verifyJobCreator };
+export { verifyJobCreator };

@@ -2,10 +2,12 @@
 import { Router } from "express";
 const router = Router();
 //
+import { verifyJobCreator } from "../middleware/verifyJobCreator";
+//
 import { createJob, getAllJobs } from "../controllers/jobController";
 
 //
-router.post("/", createJob);
+router.post("/", verifyJobCreator, createJob);
 router.get("/", getAllJobs);
 //
 

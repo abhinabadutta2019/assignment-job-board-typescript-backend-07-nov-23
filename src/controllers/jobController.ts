@@ -1,13 +1,20 @@
 import { Request, Response } from "express";
 import { Job } from "../models/Job";
-
 //
-const createJob = async (req: Request, res: Response) => {
+interface CustomRequest extends Request {
+  //as no question mark - was the reason of error
+  user?: any; // Replace 'any' with the actual user data type
+}
+//
+const createJob = async (req: CustomRequest, res: Response) => {
   try {
-    const { createdBy, title } = req.body;
+    const middlewareUser = req.user;
+
+    const { title } = req.body;
     // Create a new user
     const newJob = new Job({
-      createdBy: createdBy,
+      //   createdBy: createdBy,
+      createdBy: middlewareUser,
       title: title,
     });
     //

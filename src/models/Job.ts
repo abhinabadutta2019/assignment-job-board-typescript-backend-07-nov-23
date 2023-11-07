@@ -4,11 +4,12 @@ const jobSchema = new mongoose.Schema(
   {
     title: {
       type: String,
+      unique: true,
       required: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
       required: true,
     },
     logoUrl: {
@@ -17,7 +18,7 @@ const jobSchema = new mongoose.Schema(
     appliedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
       },
     ],
   },

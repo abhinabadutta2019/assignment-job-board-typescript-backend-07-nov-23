@@ -13,10 +13,11 @@ const createToken = (_id: string) => {
 // Controller function to register a new user
 const registerUser = async (req: Request, res: Response) => {
   try {
-    const { email, password, userType } = req.body;
+    const { username, email, password, userType } = req.body;
 
     // Create a new user
     const newUser = new User({
+      username: username,
       email: email,
       password: password,
       userType: userType,

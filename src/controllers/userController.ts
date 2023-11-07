@@ -45,7 +45,7 @@ const loginUser = async (req: Request, res: Response) => {
     if (user && user.password === password) {
       // creating token
       const token = createToken(user._id.toString());
-      res.status(200).json({ token: token });
+      res.status(200).json({ token: token, user: user });
       //
       //
     } else {

@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import cors from "cors"; // Import the cors package
 
 //
 import { userRouter } from "./routers/user";
@@ -9,6 +10,16 @@ import { jobRouter } from "./routers/job";
 const app = express();
 app.use(express.json()); // Middleware to parse JSON requests
 dotenv.config(); //dotenv
+//
+// Configure CORS to allow requests from your frontend URL
+const corsOptions = {
+  origin: ["http://localhost:3052"],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // If your API supports cookies or authentication headers
+};
+// app.use(cors()); // Enable CORS for all routes
+app.use(cors(corsOptions));
+
 //
 ///////mongoDB cloud//////////////////
 let uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.te788iv.mongodb.net/assign-job-board-typesc-nov-23?retryWrites=true&w=majority`;

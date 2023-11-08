@@ -27,7 +27,7 @@ const registerUser = async (req: Request, res: Response) => {
     const savedUser = await newUser.save();
     if (savedUser) {
       const token = createToken(savedUser._id.toString());
-      res.status(201).json({ user: savedUser, token: token });
+      res.status(201).json({ userType: savedUser.userType, token: token });
     }
   } catch (error) {
     res.status(400).json(error); // Handle any validation or database errors
@@ -45,7 +45,7 @@ const loginUser = async (req: Request, res: Response) => {
     if (user && user.password === password) {
       // creating token
       const token = createToken(user._id.toString());
-      res.status(200).json({ token: token, user: user });
+      res.status(200).json({ token: token, userType: user.userType });
       //
       //
     } else {

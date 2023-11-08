@@ -40,7 +40,7 @@ const getAllJobs = async (req: Request, res: Response) => {
     res.status(500).json(error);
   }
 };
-//
+// for applicant only
 const applyJob = async (req: CustomRequest, res: Response) => {
   try {
     const jobId = req.params.jobId; // Get the job ID from the route parameters
@@ -73,7 +73,30 @@ const applyJob = async (req: CustomRequest, res: Response) => {
     user.appliedJobs.push(updatedJob._id);
     await user.save();
 
-    res.json({ message: "Job application successful" /*job: updatedJob*/ });
+    res
+      .status(201)
+      .json({ message: "Job application successful" /*job: updatedJob*/ });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+// for applicant only
+const allAppliedJobs = async (req: CustomRequest, res: Response) => {
+  try {
+    const userId = req.user._id; // Get the user ID from the middleware
+
+    // Find the user by ID and populate the appliedJobs array with job titles
+    const user = await User.findOne({ _id: userId }).populate({
+      path: "appliedJobs",
+      select: "title -_id", // Include only the 'title' field and exclude the '_id' field
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(user.appliedJobs);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -81,4 +104,4 @@ const applyJob = async (req: CustomRequest, res: Response) => {
 };
 //
 
-export { createJob, getAllJobs, applyJob };
+export { createJob, getAllJobs, applyJob, allAppliedJobs };

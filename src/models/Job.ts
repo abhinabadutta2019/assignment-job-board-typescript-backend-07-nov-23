@@ -16,9 +16,9 @@ const jobSchema = new mongoose.Schema(
       ref: "user",
       required: true,
     },
-    logoUrl: {
-      type: String,
-    },
+    // logoUrl: {
+    //   type: String,
+    // },
     appliedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,

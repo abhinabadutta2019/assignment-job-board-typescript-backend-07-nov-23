@@ -27,12 +27,13 @@ const createJob = async (req: CustomRequest, res: Response) => {
 
     console.log(middlewareUser);
 
-    const { title } = req.body;
+    const { title, description } = req.body;
     // Create a new user
     const newJob = new Job({
       //   createdBy: createdBy,
       createdBy: middlewareUser,
       title: title,
+      description: description,
     });
     //
     // Save the user to the database

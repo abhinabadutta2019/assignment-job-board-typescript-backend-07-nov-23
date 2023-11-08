@@ -7,6 +7,18 @@ interface CustomRequest extends Request {
   user?: any; // Replace 'any' with the actual user data type
 }
 //
+// for all auth type
+const getAllJobs = async (req: Request, res: Response) => {
+  try {
+    // Use Mongoose to find all jobs and populate the 'createdBy' field to get user details
+    const jobs = await Job.find().populate("createdBy", "username email"); // Replace 'username' and 'email' with the fields you want to include
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+// for jobcreator only
 const createJob = async (req: CustomRequest, res: Response) => {
   try {
     const middlewareUser = req.user;
@@ -29,17 +41,28 @@ const createJob = async (req: CustomRequest, res: Response) => {
     res.status(400).json(error);
   }
 };
-//
-const getAllJobs = async (req: Request, res: Response) => {
+// for jobcreator only
+const allAppliedUserDetail = async (req: CustomRequest, res: Response) => {
   try {
-    // Use Mongoose to find all jobs and populate the 'createdBy' field to get user details
-    const jobs = await Job.find().populate("createdBy", "username email"); // Replace 'username' and 'email' with the fields you want to include
+    const jobId = req.params.jobId; // Get the job ID from the route parameters
 
-    res.status(200).json(jobs);
+    // Find the job by ID and populate the appliedBy array with only cvUrl and email
+    const job = await Job.findOne({ _id: jobId }).populate({
+      path: "appliedBy",
+      select: "cvUrl email -_id", // Include only 'cvUrl' and 'email' fields and exclude the '_id' field
+    });
+
+    if (!job) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+
+    res.json(job.appliedBy);
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 // for applicant only
 const applyJob = async (req: CustomRequest, res: Response) => {
   try {
@@ -104,4 +127,12 @@ const allAppliedJobs = async (req: CustomRequest, res: Response) => {
 };
 //
 
-export { createJob, getAllJobs, applyJob, allAppliedJobs };
+//
+
+export {
+  createJob,
+  getAllJobs,
+  applyJob,
+  allAppliedJobs,
+  allAppliedUserDetail,
+};

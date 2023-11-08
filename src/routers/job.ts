@@ -11,10 +11,15 @@ import {
   getAllJobs,
   applyJob,
   allAppliedJobs,
+  allAppliedUserDetail,
 } from "../controllers/jobController";
 
-//
+// for jobcreator only
 router.post("/", verifyJobCreator, createJob);
+// for jobcreator only
+router.get("/appliedUsers/:jobId", verifyJobCreator, allAppliedUserDetail);
+
+//for all auth user
 router.get("/", verifyJWT, getAllJobs);
 // for applicant only
 router.post("/apply/:jobId", verifyJWT, applyJob);

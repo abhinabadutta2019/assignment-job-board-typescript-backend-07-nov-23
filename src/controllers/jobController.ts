@@ -11,7 +11,9 @@ interface CustomRequest extends Request {
 const getAllJobs = async (req: Request, res: Response) => {
   try {
     // Use Mongoose to find all jobs and populate the 'createdBy' field to get user details
-    const jobs = await Job.find().populate("createdBy", "username email"); // Replace 'username' and 'email' with the fields you want to include
+    const jobs = await Job.find()
+      .populate("createdBy", "username email")
+      .sort({ createdAt: -1 }); // Replace 'username' and 'email' with the fields you want to include
 
     res.status(200).json(jobs);
   } catch (error) {

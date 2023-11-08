@@ -73,7 +73,7 @@ const applyJob = async (req: CustomRequest, res: Response) => {
     user.appliedJobs.push(updatedJob._id);
     await user.save();
 
-    res.json({ message: "Job application successful", job: updatedJob });
+    res.json({ message: "Job application successful" /*job: updatedJob*/ });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

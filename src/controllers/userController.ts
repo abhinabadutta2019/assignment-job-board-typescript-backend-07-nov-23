@@ -34,7 +34,7 @@ const registerUser = async (req: Request, res: Response) => {
     if (!validatedTask.success) {
       //zod messa in a string showing
       return res
-        .status(400)
+        .status(401)
         .json({ error: fromZodError(validatedTask.error).message });
     }
 

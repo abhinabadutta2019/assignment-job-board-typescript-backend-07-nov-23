@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
 import jwt from "jsonwebtoken";
+import { UserSchema } from "../validators/userValidator";
+import { fromZodError } from "zod-validation-error";
 
 //
 const createToken = (_id: string) => {
@@ -13,7 +15,7 @@ const createToken = (_id: string) => {
 // Controller function to register a new user
 const registerUser = async (req: Request, res: Response) => {
   try {
-    const { /*username*/ email, password, userType } = req.body;
+    const { /*username*/ email, password, userType, cvUrl } = req.body;
 
     // Create a new user
     const newUser = new User({
@@ -21,7 +23,20 @@ const registerUser = async (req: Request, res: Response) => {
       email: email,
       password: password,
       userType: userType,
+      cvUrl: cvUrl,
     });
+    //
+    const validatedTask = UserSchema.safeParse({
+      email: email,
+      password: password,
+    });
+    //
+    if (!validatedTask.success) {
+      //zod messa in a string showing
+      return res
+        .status(400)
+        .json({ error: fromZodError(validatedTask.error).message });
+    }
 
     // Save the user to the database
     const savedUser = await newUser.save();

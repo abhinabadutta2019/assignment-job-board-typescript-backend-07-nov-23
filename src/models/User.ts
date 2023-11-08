@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   cvUrl: {
     type: String,
+    default: "https://www.google.com",
   },
   // Array to store job IDs that the user has applied to (only useful in 'applicant' type)
   appliedJobs: [

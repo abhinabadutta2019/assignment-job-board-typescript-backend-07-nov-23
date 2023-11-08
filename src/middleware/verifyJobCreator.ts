@@ -20,10 +20,10 @@ const verifyJobCreator = async (
       return res.status(400).json({ message: "no token found" });
     }
     // //
-    console.log(
-      req.headers.authorization,
-      "req.headers.authorization from verifyJobCreator"
-    );
+    // console.log(
+    //   req.headers.authorization,
+    //   "req.headers.authorization from verifyJobCreator"
+    // );
     //
     //
     const authHeader = req.headers.authorization;
@@ -37,10 +37,16 @@ const verifyJobCreator = async (
     // console.log(result, "result");
     const userID = result._id;
     //
+    const user = await User.findOne({ _id: userID }).select("_id, userType ");
+    //
     //sending the user._id in the routes
-    req.user = await User.findOne({ _id: userID }).select("_id");
 
-    next();
+    if (user && user.userType === "jobcreator") {
+      req.user = user._id; // Store user ID in the request
+      next();
+    } else {
+      res.status(403).json({ error: "Permission denied" });
+    }
   } catch (error) {
     console.log(error);
     res.status(401).json({ error: "Request is not authorized" });

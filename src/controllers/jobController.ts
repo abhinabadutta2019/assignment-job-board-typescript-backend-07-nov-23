@@ -10,6 +10,8 @@ const createJob = async (req: CustomRequest, res: Response) => {
   try {
     const middlewareUser = req.user;
 
+    console.log(middlewareUser);
+
     const { title } = req.body;
     // Create a new user
     const newJob = new Job({
@@ -20,7 +22,7 @@ const createJob = async (req: CustomRequest, res: Response) => {
     //
     // Save the user to the database
     const savedJob = await newJob.save();
-    //
+
     res.status(201).json({ job: savedJob });
   } catch (error) {
     res.status(400).json(error);

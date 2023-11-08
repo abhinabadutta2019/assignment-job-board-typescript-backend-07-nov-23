@@ -12,12 +12,16 @@ import {
   applyJob,
   allAppliedJobs,
   allAppliedUserDetail,
+  getYourCreatedJobs,
 } from "../controllers/jobController";
 
 // for jobcreator only
 router.post("/", verifyJobCreator, createJob);
 // for jobcreator only
 router.get("/appliedUsers/:jobId", verifyJobCreator, allAppliedUserDetail);
+//
+// for jobcreator only
+router.get("/yourCreatedJobs/:jobId", verifyJobCreator, getYourCreatedJobs);
 
 //for all auth user
 router.get("/", verifyJWT, getAllJobs);

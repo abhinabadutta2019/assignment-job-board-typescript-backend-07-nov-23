@@ -40,8 +40,12 @@ const createJob = async (req: CustomRequest, res: Response) => {
     const savedJob = await newJob.save();
 
     res.status(201).json({ job: savedJob });
-  } catch (error) {
-    res.status(400).json(error);
+  } catch (error: any) {
+    if (error && error.code == 11000) {
+      return res.status(403).json();
+    }
+
+    res.status(500).json(error);
   }
 };
 // for jobcreator only
@@ -63,6 +67,17 @@ const allAppliedUserDetail = async (req: CustomRequest, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+//
+const getYourCreatedJobs = async (req: CustomRequest, res: Response) => {
+  try {
+    const userId = req.user._id;
+    const jobs = await Job.find({ createdBy: userId });
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
 
@@ -138,4 +153,5 @@ export {
   applyJob,
   allAppliedJobs,
   allAppliedUserDetail,
+  getYourCreatedJobs,
 };

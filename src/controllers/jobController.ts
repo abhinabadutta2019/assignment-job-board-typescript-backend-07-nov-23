@@ -130,7 +130,11 @@ const allAppliedJobs = async (req: CustomRequest, res: Response) => {
     // Find the user by ID and populate the appliedJobs array with job titles
     const user = await User.findOne({ _id: userId }).populate({
       path: "appliedJobs",
-      select: "title -_id", // Include only the 'title' field and exclude the '_id' field
+      select: "title description",
+      populate: {
+        path: "createdBy",
+        select: "email -_id", // Include only the 'email' field of createdBy and exclude the '_id' field
+      },
     });
 
     if (!user) {

@@ -13,7 +13,10 @@ dotenv.config(); //dotenv
 //
 // Configure CORS to allow requests from your frontend URL
 const corsOptions = {
-  origin: ["http://localhost:3052"],
+  origin: [
+    "https://assignment-job-board-typescript-backend.onrender.com",
+    "http://localhost:3052",
+  ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // If your API supports cookies or authentication headers
 };

@@ -14,7 +14,7 @@ dotenv.config(); //dotenv
 // Configure CORS to allow requests from your frontend URL
 const corsOptions = {
   origin: [
-    "https://assignment-job-board-typescript-backend.onrender.com",
+    "https://assignment-job-board-react-frontend.onrender.com",
     "http://localhost:3052",
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
